@@ -1,0 +1,30 @@
+{
+  "name": "routr-network",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/frontend.mjs dev",
+    "build": "node scripts/frontend.mjs build",
+    "preview": "node scripts/frontend.mjs preview",
+    "typecheck": "node scripts/typecheck.mjs",
+    "check:ui": "node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "@coinbase/wallet-sdk": "^4.4.0",
+    "@tanstack/react-query": "^5.90.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "viem": "^2.38.0",
+    "wagmi": "^3.7.9"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "playwright": "^1.64.1",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.5"
+  }
+}
