@@ -1,5 +1,10 @@
 import type { ChainKey } from "./components/ChainMark";
 import type { IconName } from "./components/Icon";
+export const routrToken = {
+  symbol: "$ROUTR",
+  contractAddress: "0x42353202046B059BA748C052a62b16744E8b83E1",
+} as const;
+
 export const chains: {
   key: ChainKey;
   name: string;

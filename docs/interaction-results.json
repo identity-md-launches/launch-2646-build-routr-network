@@ -1,0 +1,114 @@
+{
+  "checks": [
+    {
+      "name": "Static subpath export and required content",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "$ROUTR contract",
+      "passed": true,
+      "details": "Full supplied address displayed and copied exactly"
+    },
+    {
+      "name": "$ROUTR copy recovery and keyboard",
+      "passed": true,
+      "details": "Unavailable clipboard gives a manual-selection instruction; keyboard copying succeeds after reload and retains focus"
+    },
+    {
+      "name": "$ROUTR pending copy",
+      "passed": true,
+      "details": "Focus retained; duplicate activation ignored; copying recovers after completion"
+    },
+    {
+      "name": "Desktop axe accessibility",
+      "passed": true,
+      "details": "No WCAG A/AA violations detected"
+    },
+    {
+      "name": "Protocol, chain, footer, and docs navigation",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "SDK copy",
+      "passed": true,
+      "details": "Clipboard matches the displayed example"
+    },
+    {
+      "name": "Intent builder",
+      "passed": true,
+      "details": "Invalid amount, same-chain route, slippage range, review, JSON download, edit, Escape, focus return"
+    },
+    {
+      "name": "Wallet absent",
+      "passed": true,
+      "details": "Useful error and retry after choosing an unavailable browser wallet"
+    },
+    {
+      "name": "Responsive 320px",
+      "passed": true,
+      "details": "No overflow; 1 feature columns; 1 flow columns"
+    },
+    {
+      "name": "Responsive 390px",
+      "passed": true,
+      "details": "No overflow; 1 feature columns; 1 flow columns"
+    },
+    {
+      "name": "Responsive 640px",
+      "passed": true,
+      "details": "No overflow; 1 feature columns; 1 flow columns"
+    },
+    {
+      "name": "Responsive 859px",
+      "passed": true,
+      "details": "No overflow; 1 feature columns; 1 flow columns"
+    },
+    {
+      "name": "Responsive 860px",
+      "passed": true,
+      "details": "No overflow; 3 feature columns; 4 flow columns"
+    },
+    {
+      "name": "Responsive 1024px",
+      "passed": true,
+      "details": "No overflow; 3 feature columns; 4 flow columns"
+    },
+    {
+      "name": "Responsive 1440px",
+      "passed": true,
+      "details": "No overflow; 3 feature columns; 4 flow columns"
+    },
+    {
+      "name": "Keyboard flow",
+      "passed": true,
+      "details": "Skip link, primary action, modal focus containment and Escape"
+    },
+    {
+      "name": "Reduced motion",
+      "passed": true,
+      "details": "Pulse disabled and main interaction works"
+    },
+    {
+      "name": "Phone wallet sheet",
+      "passed": true,
+      "details": "Four working deep-link formats, local marks, Coinbase Smart Wallet; no generic injected row"
+    },
+    {
+      "name": "EIP-6963 wallet with test provider",
+      "passed": true,
+      "details": "Named discovery, generic suppression, rejection, retry, connect, switch/add chain, reconnect, disconnect"
+    },
+    {
+      "name": "Browser errors and local resources",
+      "passed": true,
+      "details": "Zero page errors and local HTTP failures"
+    },
+    {
+      "name": "WebKit primary interaction",
+      "passed": null,
+      "details": "browserType.launch:  ╔══════════════════════════════════════════════════════╗ ║ Host system is missing dependencies to run browsers. ║ ║ Missing libraries:                                   ║"
+    }
+  ]
+}

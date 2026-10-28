@@ -30,7 +30,7 @@ Tokens live in `:root` in `src/styles.css`.
 
 Brand marks preserve their identifying colors. Diagram lines, their low-opacity grid and radial glow use local SVG/CSS values in `RoutingDiagram.tsx` and `.routing-diagram`; they are decorative, not controls. Status always includes text as well as color.
 
-The final probe measured 6.51:1 for hero description text, 6.20:1 for feature body text, 11.61:1 for the primary action and 8.30:1 for code keywords against their resolved backgrounds. Gradient-backed boxes were excluded by that probe; see the validation limitations.
+The final rendered contract block measured 17.86:1 for its address and symbol (`#f0f2f5` on `#07080b`), 6.51:1 for its label and feedback (`#8b93a7` on `#07080b`), and 15.72:1 for the hovered copy button (`#f0f2f5` on `#141921`). The final probe passed its contrast check for measured solid backgrounds. It excluded 22 text boxes over images or gradients; see the validation limitations.
 
 ## Typography
 
@@ -38,13 +38,14 @@ The final probe measured 6.51:1 for hero description text, 6.20:1 for feature bo
 
 The six roles are `--text-xs` 12px, `--text-sm` 14px, `--text-base` 16px, `--text-lg` 20px, `--text-heading` 36px and `--text-display` 80px at the 16px root size. From 860–1100px, display type is 64px. Below 860px, display type is 48px and section/stat type is 32px. The wordmark reduces to 20px below 360px.
 
-The hero uses 1.05 line-height and −0.065em tracking (−0.055em on smaller layouts); section headings use 1.2 and −0.045em. Body copy uses 1.6–1.75 line-height, regular weight and natural tracking. Headings balance wrapping. Descriptions use `text-wrap: pretty` and constrained measures. Stats and chain timings use tabular numbers. Code is 12px at 1.9 line-height and wraps long lines without clipping. Inputs stay at 16px on phones. Useful text remains selectable.
+The hero uses 1.05 line-height and −0.065em tracking (−0.055em on smaller layouts); section headings use 1.2 and −0.045em. Body copy uses 1.6–1.75 line-height, regular weight and natural tracking. Headings balance wrapping. Descriptions use `text-wrap: pretty` and constrained measures. Stats and chain timings use tabular numbers. SDK code is 12px at 1.9 line-height and wraps long lines without clipping. The contract address uses 14px monospace at 1.6 line-height, left-to-right ordering, an optional `<wbr>` after character 22 and `overflow-wrap: anywhere`. This preserves every character without shrinking or ellipsis. Inputs stay at 16px on phones. Useful text remains selectable; the contract address uses `user-select: all` for manual copying.
 
 ## Layout
 
 The shared `.container` is at most 1200px wide, with 40px side margins on desktop, 24px below 860px, 20px below 640px and 16px below 360px. Spacing uses recurring 8, 12, 16, 20, 24, 28 and 32px increments. Sections start with 100px of space on desktop and 64px below 860px.
 
 - Hero: two equal columns above 859px; copy then schematic in one column below. At 390×844, the action row ends at approximately y=437, well inside the first screen.
+- Token contract: beneath the hero footnote, separated with a 1px rule, 24px top margin and 16px top padding. Its label/copy row wraps naturally when it cannot fit (observed at 320px). The full address breaks into two readable lines on phones and ends at approximately y=610 at 390×844. A stable 19.2px feedback line reserves space for success or fallback text; observed block height did not change between these states at 390px.
 - Stats: four divided cells, becoming a two-by-two layout below 640px.
 - Flow: four tiles with horizontal arrows; below 860px, one column and arrows rotated 90 degrees.
 - Features: three columns, becoming one column below 860px, as required by the brief.
@@ -74,6 +75,7 @@ The design is flat: cards have structural borders and no box shadows. The schema
 | `.step`, `.feature` | `src/App.tsx`, `src/styles.css` | Bordered information tiles. Number/icon/header/body structure for steps; icon chip/header/body for features. |
 | `.chain-table` | `src/App.tsx`, `src/styles.css` | Native table, caption, row headers, static snapshot status and responsive visible field labels. |
 | `CodeBlock` | `src/components/CodeBlock.tsx` | Highlighted TypeScript, muted line numbers, copy feedback and fallback instruction when clipboard access fails. |
+| `ContractAddress` | `src/components/ContractAddress.tsx` | Named group using `routrToken` from `src/data.ts`. Full selectable address, 44px copy button, stable polite status, pending/success/failure states. Pending uses guarded `aria-disabled` and `aria-busy` to keep keyboard focus while ignoring repeat activation. Reuses `.button-secondary`, `Icon` and existing focus/hover/reduced-motion rules. |
 | `Modal` | `src/components/Modal.tsx` | Native `dialog.showModal()`, labelled heading, initial/title-change heading focus, explicit Tab/Shift+Tab cycling, Escape/backdrop/close, body scroll lock and focus return. `wide` supports docs. Bottom sheet below 640px. |
 | `RouteBuilder` | `src/components/RouteBuilder.tsx` | Named fields, decimal amount, cross-chain/slippage validation, focused errors, review/edit and unsigned JSON download. A persistent notice identifies the preview boundary. |
 | `WalletControl` | `src/components/WalletControl.tsx` | EIP-6963 names/icons, mobile wallet-browser links, Coinbase connector, per-row pending text, disabled peers, recoverable errors, short checksummed address, network switch and disconnect. Full address available in its dialog. |
@@ -86,9 +88,10 @@ Transitions name their properties and use `--duration: 200ms` with `cubic-bezier
 - Start new sections with `.container` and `.section`, using the existing heading, body and spacing roles.
 - Use a mint filled action for the most important action; use the neutral secondary pattern for peers.
 - Pair icons and status color with text. Keep labels, addresses and errors readable and selectable.
+- Keep contract addresses in `src/data.ts`, display every character and use optional line breaks rather than clipping. An informational token address does not imply a chain or settlement integration.
 - Preserve the six-size scale, three weights, restrained borders and single-column mobile card behavior.
 - Keep runtime assets local and URLs relative. Keep new sections in document order and page navigation as anchors.
 - Do not present the draft builder, SDK example or supplied protocol snapshot as a live execution service.
 - Reuse `Modal` for overlays so focus, scroll and dismissal behavior stay consistent.
 
-Design knowledge was applied from Jakub Krehel’s [Better Interface](https://github.com/jakubkrehel/skills/tree/267330e1adfc66a718fb65fa6918c1f06d0a689e/skills/better-interface), MIT. Documentation method was adapted from Paul Bakaus’s [Impeccable document reference](https://github.com/pbakaus/impeccable/blob/9d715cc4f5564a990ca8345abfdd5df6dc9b41c8/skill/reference/document.md), Apache-2.0. Their notices and licenses are retained in `artifacts/licenses/design-guides.txt`.
+Design knowledge was applied from Jakub Krehel’s [Better Interface](https://github.com/jakubkrehel/skills/tree/267330e1adfc66a718fb65fa6918c1f06d0a689e/skills/better-interface), MIT. Documentation method was adapted from Paul Bakaus’s [Impeccable document reference](https://github.com/pbakaus/impeccable/blob/9d715cc4f5564a990ca8345abfdd5df6dc9b41c8/skill/reference/document.md), Apache-2.0. Their notices and licenses are retained in `docs/licenses/design-guides.txt`.

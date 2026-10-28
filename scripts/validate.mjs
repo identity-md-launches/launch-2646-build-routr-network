@@ -80,6 +80,85 @@ try {
   ])
     assert.equal((await page.request.get(url + asset)).status(), 200);
   record("Static subpath export and required content");
+  const expectedContract = "0x42353202046B059BA748C052a62b16744E8b83E1";
+  const token = page.getByRole("group", { name: "$ROUTR Contract address" });
+  const copyAddress = token.getByRole("button");
+  assert.equal(
+    await token.getByRole("button", { name: "Copy address for $ROUTR", exact: true }).count(),
+    1,
+  );
+  assert.equal(await token.locator("code").textContent(), expectedContract);
+  await copyAddress.click();
+  await token.getByRole("status").filter({ hasText: "Address copied." }).waitFor();
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    expectedContract,
+  );
+  record("$ROUTR contract", "Full supplied address displayed and copied exactly");
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      value: undefined,
+      configurable: true,
+    });
+  });
+  await copyAddress.click();
+  await token
+    .getByRole("status")
+    .filter({ hasText: "Copy unavailable. Select the address to copy." })
+    .waitFor();
+  assert.equal(await token.locator("code").textContent(), expectedContract);
+  assert.equal(await copyAddress.isEnabled(), true);
+  assert.equal(
+    await token.locator("code").evaluate((e) => {
+      const range = document.createRange();
+      range.selectNodeContents(e);
+      const selection = getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      const selected = selection.toString();
+      selection.removeAllRanges();
+      return selected;
+    }),
+    expectedContract,
+  );
+  await page.reload();
+  await copyAddress.focus();
+  await page.keyboard.press("Space");
+  await token.getByRole("status").filter({ hasText: "Address copied." }).waitFor();
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    expectedContract,
+  );
+  assert.equal(
+    await copyAddress.evaluate((e) => e === document.activeElement),
+    true,
+  );
+  record(
+    "$ROUTR copy recovery and keyboard",
+    "Unavailable clipboard gives a manual-selection instruction; keyboard copying succeeds after reload and retains focus",
+  );
+  await page.evaluate(() => {
+    window.__routrCopyCount = 0;
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: () => {
+        window.__routrCopyCount++;
+        return new Promise((done) => { window.__finishRoutrCopy = done; });
+      },
+    });
+  });
+  await page.keyboard.press("Space");
+  assert.equal(await copyAddress.getAttribute("aria-disabled"), "true");
+  assert.equal(await copyAddress.getAttribute("aria-busy"), "true");
+  assert.equal(await copyAddress.evaluate((e) => e === document.activeElement), true);
+  await page.keyboard.press("Space");
+  assert.equal(await page.evaluate(() => window.__routrCopyCount), 1);
+  await page.evaluate(() => window.__finishRoutrCopy());
+  await token.getByRole("status").filter({ hasText: "Address copied." }).waitFor();
+  assert.equal(await copyAddress.getAttribute("aria-disabled"), "false");
+  assert.equal(await copyAddress.evaluate((e) => e === document.activeElement), true);
+  record("$ROUTR pending copy", "Focus retained; duplicate activation ignored; copying recovers after completion");
+  await page.reload();
   const desktopAxe = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
     .analyze();
@@ -227,6 +306,8 @@ try {
       buttonBottom: [...document.querySelectorAll("button")]
         .find((b) => b.textContent.includes("Start routing"))
         .getBoundingClientRect().bottom,
+      contractBottom: document.querySelector(".token-contract-address")
+        .getBoundingClientRect().bottom,
       features: getComputedStyle(
         document.querySelector(".features"),
       ).gridTemplateColumns.split(" ").length,
@@ -235,7 +316,10 @@ try {
       ).gridTemplateColumns.split(" ").length,
     }));
     assert.equal(metrics.overflow, false, `${width}px page overflow`);
-    if (width === 390) assert.ok(metrics.buttonBottom < 844);
+    if (width === 390) {
+      assert.ok(metrics.buttonBottom < 844);
+      assert.ok(metrics.contractBottom < 844);
+    }
     assert.equal(metrics.features, width < 860 ? 1 : 3);
     assert.equal(metrics.steps, width < 860 ? 1 : 4);
     record(

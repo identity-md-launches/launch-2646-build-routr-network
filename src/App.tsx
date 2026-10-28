@@ -5,6 +5,7 @@ import { ChainMark } from "./components/ChainMark";
 import { CodeBlock } from "./components/CodeBlock";
 import { RouteBuilder } from "./components/RouteBuilder";
 import { Docs } from "./components/Docs";
+import { ContractAddress } from "./components/ContractAddress";
 import { chains, steps, features } from "./data";
 const Wallet = lazy(() => import("./WalletProvider"));
 export default function App() {
@@ -78,6 +79,7 @@ export default function App() {
             <p className="hero-footnote">
               <Icon name="shield" /> Non-custodial by design
             </p>
+            <ContractAddress />
           </div>
           <RoutingDiagram />
         </section>
